@@ -1,0 +1,23 @@
+name: MkDocs
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+
+env:
+  DOCKER_HUB_BASE_NAME: nmch/docker-mkdocs
+  TAG_NAME: latest
+
+jobs:
+  build:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker build . -t ${DOCKER_HUB_BASE_NAME}:${TAG_NAME}
+      - env:
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        run: echo "${DOCKER_HUB_TOKEN}" | docker login -u nmch --password-stdin
+      - run: docker push ${DOCKER_HUB_BASE_NAME}:${TAG_NAME}
