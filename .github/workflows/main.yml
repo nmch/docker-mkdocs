@@ -13,7 +13,7 @@ env:
 
 jobs:
   build:
-    runs-on: docker
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - run: docker build . -t ${DOCKER_HUB_BASE_NAME}:${TAG_NAME}
